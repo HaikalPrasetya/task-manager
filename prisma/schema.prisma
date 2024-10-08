@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int          @id @default(autoincrement())
+  name           String
+  email          String       @unique
+  password       String       @db.VarChar(50)
+  profilePicture String?
+  tasks          Task[]
+  customTasks    CustomTask[]
+  createdAt      DateTime     @default(now())
+}
+
+model CustomTask {
+  id        Int      @id @default(autoincrement())
+  title     String
+  task      Task[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id           Int         @id @default(autoincrement())
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  title        String
+  dueDate      DateTime?
+  note         String?
+  steps        Step[]
+  customTask   CustomTask? @relation(fields: [customId], references: [id], onDelete: Cascade)
+  customId     Int?
+  isCompleted  Boolean     @default(false)
+  isImportant  Boolean     @default(false)
+  addedToMyDay Boolean     @default(false)
+  isCustomTask Boolean      @default(false)
+  updatedAt    DateTime    @updatedAt
+  createdAt    DateTime    @default(now())
+}
+
+model Step {
+  id          Int      @id @default(autoincrement())
+  name        String
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId      Int
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}

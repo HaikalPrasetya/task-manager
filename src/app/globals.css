@@ -2,26 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@layer utilities {
+  .wrapper {
+    width: 100%;
+    padding-left: 1rem; /* px-4 */
+    padding-right: 1rem; /* px-4 */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    @screen md {
+      padding-left: 2rem; /* md:px-8 */
+      padding-right: 2rem; /* md:px-8 */
+    }
+
+    @screen lg {
+      padding-left: 4rem; /* lg:px-16 */
+      padding-right: 4rem; /* lg:px-16 */
+    }
+
+    @screen xl {
+      padding-left: 7rem; /* xl:px-28 */
+      padding-right: 7rem; /* xl:px-28 */
+    }
+
+    @screen 2xl {
+      padding-left: 9rem; /* 2xl:px-36 */
+      padding-right: 9rem; /* 2xl:px-36 */
+    }
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(242, 242, 242);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.hide-scrollbar {
+  scrollbar-width: none;
 }
